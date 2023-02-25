@@ -675,6 +675,39 @@ app.post('/marcarConsulta', (req, res) => {
 
 })
 
+//AREA DE RADIAÇÃO
+app.get('/login', (req, res) => {
+    const nome = req.body.nome
+    const sql = `SELECT consulta.id, data, horario, cliente, clientesobre, consulta.email, sintomas from consulta inner join medico on 
+    consulta.clientesobre = medico.nome where consulta.clientesobre = 'bruno'`
+    conn.query(sql, function (err, data) {
+        if (err) {
+            console.log(err)
+            return
+        }
+
+        const listarC = data
+        res.render('medicoId', { layout: false, listarC})
+
+    })})
+    
+app.get('/verConsulta', (req, res) => {
+    const nome = req.body.nome
+    const sql = `SELECT consulta.id, data, horario, cliente, clientesobre, consulta.email, sintomas from consulta inner join medico on 
+    consulta.clientesobre = medico.nome where consulta.clientesobre = 'teste'`
+    conn.query(sql, function (err, data) {
+        if (err) {
+            console.log(err)
+            return
+        }
+
+        const listarC = data
+        res.render('verConsulta', { layout: false, listarC})
+
+    })})
+
+//AREA DE RADIACAO
+
 //inicio da parte dos exames (Maiara)
 
 // inserir dados (marcar exame)
