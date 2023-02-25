@@ -234,7 +234,22 @@
                 {{!-- criar uma area para os cards da consulta --}}
                 <div class="col-md-6">
 
-                    <h1>Ainda pensando</h1>
+                    <h1>
+
+                        
+<div class="/verConsulta">
+    {{#each listarC}}
+
+    <strong> #{{this.id}} </strong> -
+    <h1>{{nome}}</h1>
+    <p> Dia: {{data}},
+     Hora: {{horario}},
+     Sintomas: {{sintomas}} </p> <br>
+
+    {{/each}}
+
+
+</div>
 
                 </div>
 
