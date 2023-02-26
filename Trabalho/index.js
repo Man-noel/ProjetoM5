@@ -59,24 +59,22 @@ app.get('/loginM', (req, res) => {
 
 
 // page fake login
+
 app.post('/login', (req, res) => {
     const cpf = req.body.cpf
-
-
-    const sql = `SELECT * FROM medico WHERE cpf = ${cpf}`
-
-    conn.query(sql, function (err, data) {
+    const sql = `SELECT * from consulta inner join medico on 
+    consulta.clientesobre = medico.nome where cpf = '${cpf}'`
+    const sql1 = `SELECT * from medico where cpf = '${cpf}'`
+    conn.query(sql,sql1, function (err, data) {
         if (err) {
             console.log(err)
             return
         }
 
-        const listarmedico = data[0]
-        res.render('medicoId', { layout: false, listarmedico })
-
+        const listarmedico = data[0];
+        const listarC = data;
+        res.render('medicoId', { layout: false, listarmedico, listarC })
     })
-
-
 })
 
 
@@ -674,39 +672,6 @@ app.post('/marcarConsulta', (req, res) => {
     })
 
 })
-
-//AREA DE RADIAÇÃO
-app.get('/login', (req, res) => {
-    const nome = req.body.nome
-    const sql = `SELECT consulta.id, data, horario, cliente, clientesobre, consulta.email, sintomas from consulta inner join medico on 
-    consulta.clientesobre = medico.nome where consulta.clientesobre = 'bruno'`
-    conn.query(sql, function (err, data) {
-        if (err) {
-            console.log(err)
-            return
-        }
-
-        const listarC = data
-        res.render('medicoId', { layout: false, listarC})
-
-    })})
-    
-app.get('/verConsulta', (req, res) => {
-    const nome = req.body.nome
-    const sql = `SELECT consulta.id, data, horario, cliente, clientesobre, consulta.email, sintomas from consulta inner join medico on 
-    consulta.clientesobre = medico.nome where consulta.clientesobre = 'teste'`
-    conn.query(sql, function (err, data) {
-        if (err) {
-            console.log(err)
-            return
-        }
-
-        const listarC = data
-        res.render('verConsulta', { layout: false, listarC})
-
-    })})
-
-//AREA DE RADIACAO
 
 //inicio da parte dos exames (Maiara)
 
