@@ -180,13 +180,13 @@
 
 
                         <div>
-                            <a class="btn btn-secondary btn-lg editarBtnM"
+                            <a class="btn btn-dark btn-lg editarBtnM"
                                 href="/medico/editar/{{listarmedico.id}}">Editar</a>
                         </div>
 
 
                         <div>
-                            <button type="button" class="btn btn-secondary btn-lg editarBtnM" data-bs-toggle="modal"
+                            <button type="button" class="btn btn-dark btn-lg editarBtnM" data-bs-toggle="modal"
                                 data-bs-target="#exampleModal">
                                 Excluir
                             </button>
@@ -201,7 +201,8 @@
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel"><strong>Excluir perfil</strong></h1>
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel"><strong>Excluir perfil</strong>
+                                    </h1>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                                 </div>
@@ -231,41 +232,67 @@
 
 
 
-                {{!-- criar uma area para os cards da consulta --}}
+
                 <div class="col-md-6">
 
-                    <h1>
+                    <h1 class="fw-semibold mb-0 fs-1" style="padding-bottom: 10%;">Consultas marcadas</h1>
 
-                        
-<div class="/verConsulta">
-    {{#each listarC}}
+                    <div class="row" style="justify-content: space-between;">
 
-    <strong> #{{this.id}} </strong> -
-    <h1>{{nome}}</h1>
-    <p> Dia: {{data}},
-     Hora: {{horario}},
-     Sintomas: {{sintomas}} </p> <br>
+                        {{#each listarC}}
 
-    {{/each}}
+                        <div class="card text-dark bg-light mb-3" style="width: 12rem; margin-bottom:10%;">
+
+                            <div class="card-body">
 
 
-</div>
+                                <h4 class="card-title" style="margin-bottom: 10px;"><strong>Consulta n.º
+                                        {{this.id}}</strong></h4>
+                                <p class="text-dark fs-6">
+                                    <strong>Nome:</strong> {{cliente}}
+                                    <br>
+                                    <strong>Dia:</strong> {{data}}
+                                    <br>
+                                    <strong>Hora:</strong> {{horario}}
+                                    <br>
+                                    <strong>Sintomas:</strong> {{sintomas}}
+                                </p>
+                                <a class="btn btn-primary" href="/index_exames">Marcar exame</a>
+                            </div>
+                        </div>
 
+                        {{/each}}
+
+
+                    </div>
                 </div>
-
 
 
             </div>
 
+    </div>
 
-        </main>
+     <hr class="col-3 col-12 mb-5" style=" opacity:0.2;">
+
+     
+
+
+
+    
 
 
 
 
-        <footer class="pt-5 my-5 text-muted border-top text-center">
-            Created by the Clínica Resilia team &middot; &copy; 2023
-        </footer>
+
+
+    </main>
+
+
+
+
+    <footer class="pt-5 my-5 text-muted border-top text-center">
+        Created by the Clínica Resilia team &middot; &copy; 2023
+    </footer>
 
     </div>
 
