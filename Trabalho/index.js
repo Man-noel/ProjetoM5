@@ -62,10 +62,10 @@ app.get('/loginM', (req, res) => {
 
 app.post('/login', (req, res) => {
     const cpf = req.body.cpf
-    const sql = `SELECT * from consulta inner join medico on 
-    consulta.clientesobre = medico.nome where cpf = '${cpf}'`
-    const sql1 = `SELECT * from medico where cpf = '${cpf}'`
-    conn.query(sql,sql1, function (err, data) {
+const sql = `select * from medico m left outer join
+consulta c on m.nome = c.clientesobre  
+where m.cpf = '${cpf}'` 
+    conn.query(sql, function (err, data) {
         if (err) {
             console.log(err)
             return
@@ -76,7 +76,6 @@ app.post('/login', (req, res) => {
         res.render('medicoId', { layout: false, listarmedico, listarC })
     })
 })
-
 
 app.get('/cadastrarM', (req, res) => {
     res.render('cadastrarM', { layout: false })
@@ -406,11 +405,11 @@ app.post('/cliente', (req, res) => {
         }
     })
 })
-
 app.get('/cliente/:cpf', (req, res) => {
     const cpf = req.params.cpf
-    const sql = `SELECT * FROM paciente WHERE cpf = '${cpf}'`
-
+    const sql = `select * from paciente p left outer join
+    consulta c on p.nome = c.cliente
+    where p.cpf = '${cpf}'` 
     conn.query(sql, function (err, data) {
         if (err) {
             console.log(err)
@@ -418,7 +417,8 @@ app.get('/cliente/:cpf', (req, res) => {
         }
 
         const cliente = data[0]
-        res.render('clienteInfo', { layout: false, cliente })
+        const listarC = data;
+        res.render('clienteInfo', { layout: false, cliente,listarC })
     })
 })
 // VER INFORMACOES PACIENTE   -   JOSE
