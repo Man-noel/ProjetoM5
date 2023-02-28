@@ -245,6 +245,52 @@
                         <div class="collapse multi-collapse" id="multiCollapseExample1">
                             <div class="card card-body">
 
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col">
+                        <div class="collapse multi-collapse" id="multiCollapseExample1">
+                            <div class="card card-body">
+   <div class="col-md-6">
+
+                    <h1 class="fw-semibold mb-0 fs-1" style="padding-bottom: 10%;">Consultas realizadas</h1>
+
+                    <div class="row" style="justify-content: start;">
+
+                        {{#each listarC}}
+
+                        <div class="card text-dark bg-light" style="width: 16rem; margin: 3%">
+
+                            <div class="card-body">
+
+
+                                <h4 class="card-title" style="margin-bottom: 10px;"><strong>Consulta n.º
+                                        {{this.consultaid}}</strong></h4>
+                                <p class="text-dark fs-6">
+                                    <strong>Nome:</strong> {{cliente}}
+                                    <br>
+                                    <strong>Data:</strong> {{data}}
+                                    <br>
+                                    <strong>Horário:</strong> {{horario}}
+                                    <br>
+                                    <strong>Sintomas:</strong> {{sintomas}}
+                                </p>
+
+
+
+                            </div>
+                        </div>
+
+                        {{/each}}
+
+
+                    </div>
+                </div>
+
+
+            </div>
+
+    </div>
+</div>
 {{!-- RECOMENDACAO --}}
 <table class="table table-striped table-hover">
   <thead class="table-dark">
