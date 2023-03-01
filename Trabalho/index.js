@@ -59,23 +59,28 @@ app.get('/loginM', (req, res) => {
 
 
 // page fake login
-
 app.post('/login', (req, res) => {
     const cpf = req.body.cpf
-const sql = `select * from medico m left outer join
-consulta c on m.nome = c.clientesobre  
-where m.cpf = '${cpf}'` 
+
+
+    const sql = `select * from medico m left outer join
+    consulta c on m.nome = c.clientesobre  
+    where m.cpf = '${cpf}'` 
     conn.query(sql, function (err, data) {
         if (err) {
             console.log(err)
             return
         }
 
-        const listarmedico = data[0];
+        const listarmedico = data[0]
         const listarC = data;
         res.render('medicoId', { layout: false, listarmedico, listarC })
+
     })
+
+
 })
+
 
 app.get('/cadastrarM', (req, res) => {
     res.render('cadastrarM', { layout: false })
@@ -397,30 +402,50 @@ app.post('/cliente', (req, res) => {
         const cliente = data[0]
 
         if (cliente == undefined) {
-            res.redirect('/loginP')
+            res.redirect('/cliente/loginP_loginSenhaErrado')
+            return
         } if (cliente.senha == senha) {
             res.redirect(`/cliente/${cpf}`)
         } else {
-            res.redirect(`/loginP`)
+            res.redirect(`/cliente/loginP_loginSenhaErrado`)
         }
     })
 })
+
+
+// LOGIN OU SENHA ERREDA PACIENTE   -   JOSE
+app.get('/cliente/loginP_loginSenhaErrado', (req, res) => {
+    res.render('loginP_loginSenhaErrado', { layout: false })
+})
+// LOGIN OU SENHA ERREDA PACIENTE   -   JOSE
+
 app.get('/cliente/:cpf', (req, res) => {
-    const cpf = req.params.cpf
-    const sql = `select * from paciente p left outer join
+    const cpf = req.params.cpf 
+    
+    const sql1 = `select * from paciente p left outer join
     consulta c on p.nome = c.cliente
-    where p.cpf = '${cpf}'` 
-    conn.query(sql, function (err, data) {
+    where p.cpf = '${cpf}'`
+
+    const sql2 = `select * from paciente p left outer join exames e on p.nome= e.paciente
+    where p.cpf = '${cpf}' ` 
+
+    conn.query(sql1, function (err, data) {
         if (err) {
             console.log(err)
             return
         }
+         const listarC = data;
+         
 
-        const cliente = data[0]
-        const listarC = data;
-        res.render('clienteInfo', { layout: false, cliente,listarC })
+
+        
+      const cliente = data[0]
+           
+            const listarExames = data
+            res.render('clienteInfo', { layout: false, cliente, listarExames, listarC })
+        })
     })
-})
+
 // VER INFORMACOES PACIENTE   -   JOSE
 
 
@@ -510,7 +535,9 @@ app.post('/medicamentos/receber', (req, res) => {
     const composicao = req.body.composicao
     const comprimidos = req.body.comprimidos
     const preco = req.body.preco
-    const sql = `INSERT INTO medicamentos (nome, dosagem, composicao, comprimidos, preco) VALUES ('${nome}', '${dosagem}', '${composicao}', '${comprimidos}', '${preco}')`
+    
+    const urlmed = req.body.urlmed
+    const sql = `INSERT INTO medicamentos (nome, dosagem, composicao, comprimidos, preco, urlmed) VALUES ('${nome}', '${dosagem}', '${composicao}', '${comprimidos}', '${preco}', '${urlmed}')`
 
     conn.query(sql, function (err) {
         if (err) {
@@ -593,7 +620,8 @@ app.post('/updatemed', (req, res) => {
     const composicao = req.body.composicao
     const comprimidos = req.body.comprimidos
     const preco = req.body.preco
-    const sql = `UPDATE medicamentos SET nome = '${nome}', dosagem = '${dosagem}', composicao =  '${composicao}', comprimidos = '${comprimidos}', preco = '${preco}' WHERE id = '${id}' `
+    const urlmed = req.body.urlmed
+    const sql = `UPDATE medicamentos SET nome = '${nome}', dosagem = '${dosagem}', composicao =  '${composicao}', comprimidos = '${comprimidos}', preco = '${preco}',  urlmed = '${urlmed}'  WHERE id = '${id}' `
 
     conn.query(sql, function (err) {
         if (err) {
@@ -653,16 +681,16 @@ app.get('/med/remove/:id', (req, res) => {
 
 
 
-//Marcar consulta (Manoel)
 
+//Marcar consulta (Manoel)
 app.post('/marcarConsulta', (req, res) => {
     const cliente = req.body.cliente
     const clientesobre = req.body.clientesobre
-    const email = req.body.consultaemail
+    const email = req.body.email
     const data = req.body.data
     const horario = req.body.horario
     const sintomas = req.body.sintomas
-    const sql = `INSERT INTO consulta (cliente, clientesobre, consultaemail,data, horario, sintomas) VALUES ('${cliente}','${clientesobre}','${email}','${data}','${horario}','${sintomas}')`
+    const sql = `INSERT INTO consulta (cliente, clientesobre, consultaemail, consultadata, consultahorario, consultasintomas) VALUES ('${cliente}','${clientesobre}','${email}','${data}','${horario}','${sintomas}')`
     conn.query(sql, function (err) {
         if (err) {
             console.log(err)
@@ -736,7 +764,8 @@ app.get('/exames/:id', (req, res) => {
     const id = req.params.id
     
     const sql = `SELECT * FROM exames WHERE id = ${id}`
-    
+    const sql2 = `SELECT * FROM paciente WHERE nome = ${nome}`
+
     conn.query(sql, function (err, data){
         if (err) {
         console.log(err)
@@ -794,16 +823,25 @@ app.get('/exames/remove/:id', (req, res) => {
         if (err) {
             console.log(err)
             return
-    }
+        }
     res.redirect('/exames')})
     console.log("Deletado com sucesso!")
 })
 //Fim da parte dos exames (Maiara)
 
+
+
+// ROTA NAO EXISTENTE - JOSE
+app.use(function (req, res, next) {
+    res.status(404).render('error 404', { layout: false })
+})
+// ROTA NAO EXISTENTE - JOSE
+
+
 // conexão bd
 const conn = mysql.createConnection({
     host: '127.0.0.1',
-    port: '3306',
+    port: '3307',
     user: 'root',
     password: '',
     database: 'clinica_resilia'
